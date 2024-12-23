@@ -1,11 +1,12 @@
 <template>
-  <div class="card-scene">
+  <div class="kanban-container">
     <Container
       orientation="horizontal"
       @drop="onColumnDrop($event)"
       drag-handle-selector=".column-drag-handle"
       @drag-start="dragStart"
       :drop-placeholder="upperDropPlaceholderOptions"
+      class="kanban"
     >
       <Draggable v-for="column in scene.children" :key="column.id">
         <div :class="column.props.className">
@@ -148,3 +149,13 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.kanban-container {
+  @apply flex flex-col items-center p-5;
+
+  .kanban {
+    @apply flex flex-row gap-5;
+  }
+}
+</style>
