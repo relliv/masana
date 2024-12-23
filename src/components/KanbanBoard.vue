@@ -14,6 +14,7 @@
             <span class="column-drag-handle">&#x2630;</span>
             {{ column.name }}
           </div>
+
           <Container
             group-name="col"
             @drop="(e) => onCardDrop(column.id, e)"
