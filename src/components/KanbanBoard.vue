@@ -55,24 +55,6 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
 const columnNames = ["To do", "In progress", "Complete", "Backlog", "Blocked"];
 
-const cardColors = [
-  "azure",
-  "beige",
-  "bisque",
-  "blanchedalmond",
-  "burlywood",
-  "cornsilk",
-  "gainsboro",
-  "ghostwhite",
-  "ivory",
-  "khaki",
-];
-
-const pickColor = () => {
-  const rand = Math.floor(Math.random() * 10);
-  return cardColors[rand];
-};
-
 const scene = {
   type: "container",
   props: {
@@ -95,8 +77,6 @@ const scene = {
 };
 
 export default {
-  name: "Cards",
-
   components: { Container, Draggable },
 
   data() {
@@ -179,7 +159,7 @@ export default {
       }
 
       .task-list {
-        @apply flex flex-col gap-2;
+        @apply flex flex-col gap-2 h-full overflow-y-auto;
 
         &.task-ghost {
           @apply bg-zinc-400 border-zinc-700;
