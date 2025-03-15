@@ -9,7 +9,7 @@
       class="kanban custom-scrollbar"
     >
       <Draggable
-        v-for="column in scene.children"
+        v-for="column in scene.columns"
         :key="column.id"
         class="column custom-scrollbar-container"
       >
@@ -20,7 +20,7 @@
             </span>
 
             <span class="count">
-              {{ column.children.length }}
+              {{ column.tasks.length }}
             </span>
           </div>
 
@@ -57,7 +57,7 @@
           :drop-placeholder="dropPlaceholderOptions"
           class="task-list custom-scrollbar"
         >
-          <Draggable v-for="card in column.children" :key="card.id">
+          <Draggable v-for="card in column.tasks" :key="card.id">
             <div class="task">
               <p>{{ card.title }}</p>
             </div>
@@ -71,7 +71,7 @@
 <script>
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { applyDrag, generateItems } from "../../shared/utils/array";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
@@ -84,7 +84,7 @@ const scene = {
   props: {
     orientation: "horizontal",
   },
-  children: generateItems(4, (i) => ({
+  columns: generateItems(4, (i) => ({
     id: uuidv4(),
     type: "container",
     name: columnNames[i],
@@ -92,7 +92,7 @@ const scene = {
       orientation: "vertical",
       className: "card-container",
     },
-    children: generateItems(+(Math.random() * 10).toFixed() + 5, (j) => ({
+    tasks: generateItems(+(Math.random() * 10).toFixed() + 5, (j) => ({
       type: "draggable",
       id: uuidv4(),
       title: lorem.slice(0, Math.floor(Math.random() * 150) + 30),
@@ -122,19 +122,19 @@ export default {
   methods: {
     onColumnDrop(dropResult) {
       const scene = Object.assign({}, this.scene);
-      scene.children = applyDrag(scene.children, dropResult);
+      scene.columns = applyDrag(scene.columns, dropResult);
       this.scene = scene;
     },
 
     onCardDrop(columnId, dropResult) {
       if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
         const scene = Object.assign({}, this.scene);
-        const column = scene.children.filter((p) => p.id === columnId)[0];
-        const columnIndex = scene.children.indexOf(column);
+        const column = scene.columns.filter((p) => p.id === columnId)[0];
+        const columnIndex = scene.columns.indexOf(column);
 
         const newColumn = Object.assign({}, column);
-        newColumn.children = applyDrag(newColumn.children, dropResult);
-        scene.children.splice(columnIndex, 1, newColumn);
+        newColumn.tasks = applyDrag(newColumn.tasks, dropResult);
+        scene.columns.splice(columnIndex, 1, newColumn);
 
         this.scene = scene;
       }
@@ -142,7 +142,7 @@ export default {
 
     getCardPayload(columnId) {
       return (index) => {
-        return this.scene.children.filter((p) => p.id === columnId)[0].children[
+        return this.scene.columns.filter((p) => p.id === columnId)[0].tasks[
           index
         ];
       };
@@ -158,9 +158,11 @@ export default {
 
     addNewTask(columnId) {
       const scene = Object.assign({}, this.scene);
-      const column = scene.children.find((p) => p.id === columnId);
+      const column = scene.columns.find((p) => p.id === columnId);
       if (column) {
-        column.children.unshift({
+        const totalTaskCount = column.tasks.length;
+
+        column.tasks.unshift({
           type: "draggable",
           id: uuidv4(),
           title: "New Task",
