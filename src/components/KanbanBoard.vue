@@ -143,7 +143,7 @@ export default {
     @apply flex flex-row gap-5;
 
     .column {
-      @apply flex flex-col gap-4 w-[270px] p-4 rounded-lg
+      @apply flex flex-col gap-4 min-w-[350px] p-4 rounded-lg
         bg-gradient-to-b from-zinc-800 to-zinc-900;
 
       .header {
