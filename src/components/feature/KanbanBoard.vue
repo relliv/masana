@@ -14,6 +14,7 @@
           :key="column.id"
           class="column custom-scrollbar-container"
         >
+          <!-- Column Header -->
           <div class="header">
             <div class="left">
               <span class="title">
@@ -47,6 +48,7 @@
             </div>
           </div>
 
+          <!-- Column Content -->
           <Container
             group-name="col"
             @drop="(e) => onCardDrop(column.id, e)"
@@ -58,10 +60,11 @@
             :drop-placeholder="dropPlaceholderOptions"
             class="task-list custom-scrollbar"
           >
+            <!-- Draggable Task Items -->
             <Draggable v-for="card in column.tasks" :key="card.id">
-              <button class="task" @click="onTaskClick(card)">
+              <div class="task" @click="onTaskClick(card)">
                 <p>{{ card.title }}</p>
-              </button>
+              </div>
             </Draggable>
           </Container>
         </Draggable>
@@ -275,6 +278,7 @@ function onTaskClick(task: any) {
   }
 }
 
+// small fix for scrollable DND items
 .task-list .smooth-dnd-draggable-wrapper {
   @apply overflow-visible #{!important};
 }
