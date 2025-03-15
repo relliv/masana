@@ -19,10 +19,13 @@ html[data-theme-mode="dark"] {
 }
 
 .custom-scrollbar-container {
+    @apply overflow-auto;
+
     .custom-scrollbar {
         &::-webkit-scrollbar {
             width: var(--scrollbar-size);
             background-color: var(--scrollbar-bg-color);
+            border-radius: 5px;
         }
 
         &::-webkit-scrollbar:horizontal {

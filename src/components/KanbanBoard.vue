@@ -1,12 +1,12 @@
 <template>
-  <div class="kanban-container">
+  <div class="kanban-container custom-scrollbar-container">
     <Container
       orientation="horizontal"
       @drop="onColumnDrop($event)"
       drag-handle-selector=".column-drag-handle"
       @drag-start="dragStart"
       :drop-placeholder="upperDropPlaceholderOptions"
-      class="kanban"
+      class="kanban custom-scrollbar"
     >
       <Draggable
         v-for="column in scene.children"
@@ -137,7 +137,7 @@ export default {
 
 <style scoped lang="scss">
 .kanban-container {
-  @apply flex flex-col p-5 h-full;
+  @apply flex flex-col p-5 mr-4 h-full;
 
   .kanban {
     @apply flex flex-row gap-5;
@@ -159,7 +159,7 @@ export default {
       }
 
       .task-list {
-        @apply flex flex-col gap-2 pr-3 h-[calc(100vh-50px)] overflow-y-auto;
+        @apply flex flex-col gap-2 pr-3 h-full overflow-y-auto;
 
         &.task-ghost {
           @apply bg-zinc-400 border-zinc-700;
