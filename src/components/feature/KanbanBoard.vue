@@ -223,7 +223,7 @@ const onTaskStatusChange = (event: Event) => {
 
 <style scoped lang="scss">
 .kanban-container {
-  @apply flex flex-col p-5 mr-4 h-full;
+  @apply flex flex-col p-5 pb-0 mr-4 h-full;
 
   .kanban {
     @apply flex flex-row gap-5;
@@ -266,7 +266,7 @@ const onTaskStatusChange = (event: Event) => {
       }
 
       .task-list {
-        @apply flex flex-col gap-2 pr-3 h-full overflow-y-auto;
+        @apply flex flex-col gap-2 pr-3 overflow-y-auto h-[calc(100vh-100px)];
 
         &.task-ghost {
           @apply bg-zinc-400 border-zinc-700;
