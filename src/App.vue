@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import KanbanBoard from "./components/KanbanBoard.vue";
+import KanbanBoard from "./components/feature/KanbanBoard.vue";
 </script>

@@ -22,13 +22,27 @@
             <span class="count">
               {{ column.children.length }}
             </span>
-
-            <button>
-              <Icon name="Plus" :size="15" />
-            </button>
           </div>
 
-          <div class="right"></div>
+          <div class="right">
+            <button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-plus"
+              >
+                <path d="M5 12h14" />
+                <path d="M12 5v14" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <Container
@@ -56,7 +70,6 @@
 <script>
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { applyDrag, generateItems } from "../../shared/utils/array";
-import { Icon } from "lucide-vue-next";
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
@@ -174,7 +187,16 @@ export default {
           @apply flex flex-row gap-2 justify-end;
 
           button {
-            @apply size-10;
+            @apply p-1.5 rounded-sm bg-zinc-800
+              transition-all duration-200 ease-in-out;
+
+            &:hover {
+              @apply bg-zinc-700/80;
+            }
+
+            svg {
+              @apply size-4;
+            }
           }
         }
       }
