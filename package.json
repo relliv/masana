@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "uuid": "^11.1.0",
+    "vaul-vue": "^0.4.1",
     "vue3-smooth-dnd": "^0.0.6"
   },
   "packageManager": "pnpm@9.15.9"
