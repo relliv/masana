@@ -64,6 +64,11 @@
             <Draggable v-for="card in column.tasks" :key="card.id">
               <div class="task" @click="onTaskClick(card)">
                 <div class="title">
+                  <input
+                    type="checkbox"
+                    class="circular-checkbox"
+                    v-model="card.isDone"
+                  />
                   <h1>{{ card.title }}</h1>
                 </div>
               </div>
@@ -152,6 +157,7 @@ const scene = reactive({
       type: "draggable",
       id: uuidv4(),
       title: lorem.slice(0, Math.floor(Math.random() * 150) + 30),
+      isDone: Math.random() > 0.5,
     })),
   })),
 });
@@ -209,6 +215,7 @@ function addNewTask(columnId: any) {
       type: "draggable",
       id: uuidv4(),
       title: "New Task",
+      isDone: false,
     });
   }
 }
@@ -287,5 +294,23 @@ function onTaskClick(task: any) {
 // small fix for scrollable DND items
 .task-list .smooth-dnd-draggable-wrapper {
   @apply overflow-visible #{!important};
+}
+
+.circular-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.circular-checkbox:checked {
+  background-color: #4caf50;
+  border-color: #4caf50;
 }
 </style>
