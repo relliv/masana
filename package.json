@@ -40,6 +40,7 @@
     "vue-tsc": "^2.2.8"
   },
   "dependencies": {
+    "uuid": "^11.1.0",
     "vue3-smooth-dnd": "^0.0.6"
   },
   "packageManager": "pnpm@9.15.9"

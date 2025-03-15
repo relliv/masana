@@ -71,6 +71,7 @@
 <script>
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { applyDrag, generateItems } from "../../shared/utils/array";
+import { v4 as uuidv4 } from 'uuid';
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
@@ -84,7 +85,7 @@ const scene = {
     orientation: "horizontal",
   },
   children: generateItems(4, (i) => ({
-    id: `column${i}`,
+    id: uuidv4(),
     type: "container",
     name: columnNames[i],
     props: {
@@ -93,7 +94,7 @@ const scene = {
     },
     children: generateItems(+(Math.random() * 10).toFixed() + 5, (j) => ({
       type: "draggable",
-      id: `${i}${j}`,
+      id: uuidv4(),
       title: lorem.slice(0, Math.floor(Math.random() * 150) + 30),
     })),
   })),
@@ -161,7 +162,7 @@ export default {
       if (column) {
         column.children.unshift({
           type: "draggable",
-          id: `${columnId}-${column.children.length}`,
+          id: uuidv4(),
           title: "New Task",
         });
         this.scene = scene;
