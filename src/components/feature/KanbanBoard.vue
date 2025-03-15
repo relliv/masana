@@ -63,7 +63,9 @@
             <!-- Draggable Task Items -->
             <Draggable v-for="card in column.tasks" :key="card.id">
               <div class="task" @click="onTaskClick(card)">
-                <p>{{ card.title }}</p>
+                <div class="title">
+                  <h1>{{ card.title }}</h1>
+                </div>
               </div>
             </Draggable>
           </Container>
@@ -272,6 +274,10 @@ function onTaskClick(task: any) {
             min-h-[100px]
             bg-zinc-800 border-zinc-700 hover:border-zinc-600
             transition-all duration-300 ease-in-out cursor-pointer;
+
+          .title {
+            @apply flex flex-row gap-2;
+          }
         }
       }
     }
