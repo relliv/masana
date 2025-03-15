@@ -14,13 +14,21 @@
         class="column custom-scrollbar-container"
       >
         <div class="header">
-          <span class="title">
-            {{ column.name }}
-          </span>
+          <div class="left">
+            <span class="title">
+              {{ column.name }}
+            </span>
 
-          <span class="count">
-            {{ column.children.length }}
-          </span>
+            <span class="count">
+              {{ column.children.length }}
+            </span>
+
+            <button>
+              <Icon name="Plus" :size="15" />
+            </button>
+          </div>
+
+          <div class="right"></div>
         </div>
 
         <Container
@@ -48,6 +56,7 @@
 <script>
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { applyDrag, generateItems } from "../shared/utils/array";
+import { Icon } from "lucide-vue-next";
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
@@ -147,14 +156,26 @@ export default {
         bg-gradient-to-b from-zinc-800 to-zinc-900;
 
       .header {
-        @apply flex flex-row gap-3 items-center;
+        @apply flex flex-row gap-3 justify-between items-center;
 
-        .title {
-          @apply text-white;
+        .left {
+          @apply flex flex-row gap-2 items-center;
+
+          .title {
+            @apply text-white;
+          }
+
+          .count {
+            @apply text-gray-500 text-sm;
+          }
         }
 
-        .count {
-          @apply text-gray-500 text-sm;
+        .right {
+          @apply flex flex-row gap-2 justify-end;
+
+          button {
+            @apply size-10;
+          }
         }
       }
 

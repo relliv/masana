@@ -40,6 +40,7 @@
     "vue-tsc": "^2.2.8"
   },
   "dependencies": {
+    "lucide-vue-next": "^0.482.0",
     "vue3-smooth-dnd": "^0.0.6"
   },
   "packageManager": "pnpm@9.15.9"
