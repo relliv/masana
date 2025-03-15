@@ -72,17 +72,14 @@
       v-model:open="isTaskDetailsDrawerOpen"
       :direction="taskDetailsDrawerDirection"
     >
-      <DrawerTrigger as-child>
-        <button data-testid="trigger" class="text-2xl">Open Drawer</button>
-      </DrawerTrigger>
       <DrawerPortal>
         <DrawerOverlay
           data-testid="overlay"
-          class="fixed inset-0 bg-black/40"
+          class="fixed inset-0 bg-black/40 w-[500px]"
         />
         <DrawerContent
           data-testid="content"
-          class="bg-zinc-100 flex flex-col rounded-t-[10px] h-[96%] mt-24 fixed bottom-0 left-0 right-0"
+          class="bg-zinc-100 flex flex-col rounded-t-[10px] w-[50%] h-full left-[50%] mt-24 fixed bottom-0 right-0"
         >
           <div class="p-4 bg-white rounded-t-[10px] flex-1">
             <div
