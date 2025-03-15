@@ -59,7 +59,7 @@
         >
           <Draggable v-for="card in column.children" :key="card.id">
             <div class="task">
-              <p>{{ card.data }}</p>
+              <p>{{ card.title }}</p>
             </div>
           </Draggable>
         </Container>
@@ -94,7 +94,7 @@ const scene = {
     children: generateItems(+(Math.random() * 10).toFixed() + 5, (j) => ({
       type: "draggable",
       id: `${i}${j}`,
-      data: lorem.slice(0, Math.floor(Math.random() * 150) + 30),
+      title: lorem.slice(0, Math.floor(Math.random() * 150) + 30),
     })),
   })),
 };
@@ -162,7 +162,7 @@ export default {
         column.children.unshift({
           type: "draggable",
           id: `${columnId}-${column.children.length}`,
-          data: "",
+          title: "New Task",
         });
         this.scene = scene;
       }
@@ -224,6 +224,7 @@ export default {
 
         .task {
           @apply flex flex-col gap-2 border py-4 px-3 rounded-lg
+            min-h-[100px]
             bg-zinc-800 border-zinc-700 hover:border-zinc-600
             transition-all duration-300 ease-in-out cursor-pointer;
         }
