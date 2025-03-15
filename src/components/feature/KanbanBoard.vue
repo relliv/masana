@@ -99,7 +99,7 @@
             type="button"
             data-testid="dismiss-button"
             class="rounded-md mb-6 w-full bg-gray-900 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
-            @click="() => (open = false)"
+            @click="() => (isTaskDetailsDrawerOpen.value = false)"
           >
             Click to close
           </button>
@@ -109,7 +109,7 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import {
   DrawerContent,
   DrawerOverlay,
@@ -119,6 +119,7 @@ import {
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { applyDrag, generateItems } from "../../shared/utils/array";
 import { v4 as uuidv4 } from "uuid";
+import { ref, reactive } from "vue";
 
 const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
@@ -126,7 +127,7 @@ Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deseru
 
 const columnNames = ["To do", "In progress", "Complete", "Backlog", "Blocked"];
 
-const scene = {
+const scene = reactive({
   type: "container",
   props: {
     orientation: "horizontal",
@@ -145,92 +146,68 @@ const scene = {
       title: lorem.slice(0, Math.floor(Math.random() * 150) + 30),
     })),
   })),
-};
+});
 
-export default {
-  components: {
-    Container,
-    Draggable,
-    DrawerContent,
-    DrawerOverlay,
-    DrawerPortal,
-    DrawerRoot,
-  },
+const upperDropPlaceholderOptions = reactive({
+  className: "cards-drop-preview",
+  animationDuration: "150",
+  showOnTop: true,
+});
 
-  data() {
-    return {
-      scene,
-      upperDropPlaceholderOptions: {
-        className: "cards-drop-preview",
-        animationDuration: "150",
-        showOnTop: true,
-      },
-      dropPlaceholderOptions: {
-        className: "drop-preview",
-        animationDuration: "150",
-        showOnTop: true,
-      },
-      isTaskDetailsDrawerOpen: false,
-    };
-  },
+const dropPlaceholderOptions = reactive({
+  className: "drop-preview",
+  animationDuration: "150",
+  showOnTop: true,
+});
 
-  methods: {
-    onColumnDrop(dropResult) {
-      const scene = Object.assign({}, this.scene);
-      scene.columns = applyDrag(scene.columns, dropResult);
-      this.scene = scene;
-    },
+const isTaskDetailsDrawerOpen = ref(false);
 
-    onCardDrop(columnId, dropResult) {
-      if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
-        const scene = Object.assign({}, this.scene);
-        const column = scene.columns.filter((p) => p.id === columnId)[0];
-        const columnIndex = scene.columns.indexOf(column);
+function onColumnDrop(dropResult: any) {
+  const newScene = Object.assign({}, scene);
+  newScene.columns = applyDrag(newScene.columns, dropResult);
+  scene.columns = newScene.columns;
+}
 
-        const newColumn = Object.assign({}, column);
-        newColumn.tasks = applyDrag(newColumn.tasks, dropResult);
-        scene.columns.splice(columnIndex, 1, newColumn);
+function onCardDrop(columnId: any, dropResult: any) {
+  if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
+    const newScene = Object.assign({}, scene);
+    const column = newScene.columns.find((p) => p.id === columnId);
+    const columnIndex = newScene.columns.indexOf(column);
+    const newColumn = Object.assign({}, column);
+    newColumn.tasks = applyDrag(newColumn.tasks, dropResult);
+    newScene.columns.splice(columnIndex, 1, newColumn);
+    scene.columns = newScene.columns;
+  }
+}
 
-        this.scene = scene;
-      }
-    },
+function getCardPayload(columnId: any) {
+  return (index: number) => {
+    return scene.columns.find((p) => p.id === columnId).tasks[index];
+  };
+}
 
-    getCardPayload(columnId) {
-      return (index) => {
-        return this.scene.columns.filter((p) => p.id === columnId)[0].tasks[
-          index
-        ];
-      };
-    },
+function dragStart() {
+  console.log("drag started");
+}
 
-    dragStart() {
-      console.log("drag started");
-    },
+function log(...params: any[]) {
+  console.log(...params);
+}
 
-    log(...params) {
-      console.log(...params);
-    },
+function addNewTask(columnId: any) {
+  const column = scene.columns.find((p) => p.id === columnId);
+  if (column) {
+    column.tasks.unshift({
+      type: "draggable",
+      id: uuidv4(),
+      title: "New Task",
+    });
+  }
+}
 
-    addNewTask(columnId) {
-      const scene = Object.assign({}, this.scene);
-      const column = scene.columns.find((p) => p.id === columnId);
-      if (column) {
-        const totalTaskCount = column.tasks.length;
-
-        column.tasks.unshift({
-          type: "draggable",
-          id: uuidv4(),
-          title: "New Task",
-        });
-        this.scene = scene;
-      }
-    },
-
-    onTaskClick(task) {
-      this.isTaskDetailsDrawerOpen = true;
-    },
-  },
-};
+function onTaskClick(task: any) {
+  isTaskDetailsDrawerOpen.value = true;
+}
 </script>
 
 <style scoped lang="scss">
