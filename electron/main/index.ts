@@ -1,8 +1,9 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import os from 'node:os'
+import fs from 'fs'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -41,6 +42,7 @@ if (!app.requestSingleInstanceLock()) {
 let win: BrowserWindow | null = null
 const preload = path.join(__dirname, '../preload/index.mjs')
 const indexHtml = path.join(RENDERER_DIST, 'index.html')
+let workspacePath: string | null = null
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -78,7 +80,16 @@ async function createWindow() {
   // win.webContents.on('will-navigate', (event, url) => { }) #344
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(async () => {
+  const result = await dialog.showOpenDialog({ properties: ['openDirectory'] });
+  if (result.canceled || result.filePaths.length === 0) {
+    app.quit();
+    return;
+  }
+  workspacePath = result.filePaths[0];
+  fs.writeFileSync(path.join(app.getPath('userData'), 'workspacePath.txt'), workspacePath);
+  createWindow();
+})
 
 app.on('window-all-closed', () => {
   win = null
