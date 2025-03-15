@@ -29,21 +29,7 @@
             <div class="right">
               <!-- Add New Task -->
               <button @click="addNewTask(column.id)">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="lucide lucide-plus"
-                >
-                  <path d="M5 12h14" />
-                  <path d="M12 5v14" />
-                </svg>
+                <Plus :size="24" />
               </button>
             </div>
           </div>
@@ -131,6 +117,7 @@ import { Container, Draggable } from "vue3-smooth-dnd";
 import { applyDrag, generateItems } from "../../shared/utils/array";
 import { v4 as uuidv4 } from "uuid";
 import { ref, reactive } from "vue";
+import { Plus } from "lucide-vue-next";
 
 const taskDetailsDrawerDirection = ref<DrawerDirection>("right");
 
