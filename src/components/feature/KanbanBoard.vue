@@ -25,7 +25,8 @@
           </div>
 
           <div class="right">
-            <button>
+            <!-- Add New Task -->
+            <button @click="addNewTask(column.id)">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -152,6 +153,19 @@ export default {
 
     log(...params) {
       console.log(...params);
+    },
+
+    addNewTask(columnId) {
+      const scene = Object.assign({}, this.scene);
+      const column = scene.children.find((p) => p.id === columnId);
+      if (column) {
+        column.children.unshift({
+          type: "draggable",
+          id: `${columnId}-${column.children.length}`,
+          data: "",
+        });
+        this.scene = scene;
+      }
     },
   },
 };
