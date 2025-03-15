@@ -50,11 +50,15 @@
             <Draggable v-for="card in column.tasks" :key="card.id">
               <div class="task" @click="onTaskClick(card)">
                 <div class="title">
-                  <input
-                    type="checkbox"
-                    class="circular-checkbox"
-                    v-model="card.isDone"
-                  />
+                  <div class="checkbox-container">
+                    <Check v-if="card.isDone" :size="12" />
+                    <input
+                      type="checkbox"
+                      v-model="card.isDone"
+                      @click="onTaskStatusChange($event)"
+                    />
+                  </div>
+
                   <h1>{{ card.title }}</h1>
                 </div>
               </div>
@@ -64,6 +68,7 @@
       </Container>
     </div>
 
+    <!-- Task Details Drawer -->
     <DrawerRoot
       v-model:open="isTaskDetailsDrawerOpen"
       :direction="taskDetailsDrawerDirection"
@@ -117,7 +122,7 @@ import { Container, Draggable } from "vue3-smooth-dnd";
 import { applyDrag, generateItems } from "../../shared/utils/array";
 import { v4 as uuidv4 } from "uuid";
 import { ref, reactive } from "vue";
-import { Plus } from "lucide-vue-next";
+import { Plus, Check } from "lucide-vue-next";
 
 const taskDetailsDrawerDirection = ref<DrawerDirection>("right");
 
@@ -210,6 +215,10 @@ function addNewTask(columnId: any) {
 function onTaskClick(task: any) {
   isTaskDetailsDrawerOpen.value = true;
 }
+
+const onTaskStatusChange = (event: Event) => {
+  event.stopPropagation();
+};
 </script>
 
 <style scoped lang="scss">
@@ -264,13 +273,31 @@ function onTaskClick(task: any) {
         }
 
         .task {
-          @apply flex flex-col gap-2 border py-4 px-3 rounded-lg
+          @apply flex flex-col gap-2 border py-4 px-4 rounded-lg
             min-h-[100px]
             bg-zinc-800 border-zinc-700 hover:border-zinc-600
             transition-all duration-300 ease-in-out cursor-pointer;
 
           .title {
-            @apply flex flex-row gap-2;
+            @apply flex flex-row gap-4 justify-start items-start;
+
+            .checkbox-container {
+              @apply sticky flex flex-row justify-center items-center;
+
+              input {
+                @apply absolute appearance-none w-4 h-4 rounded-full border-2 border-gray-300 
+                  outline-none cursor-pointer transition-colors 
+                  duration-200 ease-in-out checked:bg-green-500/50 checked:border-green-500;
+              }
+
+              svg {
+                @apply absolute;
+              }
+            }
+
+            h1 {
+              @apply text-sm;
+            }
           }
         }
       }
@@ -281,23 +308,5 @@ function onTaskClick(task: any) {
 // small fix for scrollable DND items
 .task-list .smooth-dnd-draggable-wrapper {
   @apply overflow-visible #{!important};
-}
-
-.circular-checkbox {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  outline: none;
-  cursor: pointer;
-  position: relative;
-  transition: background-color 0.2s ease;
-}
-
-.circular-checkbox:checked {
-  background-color: #4caf50;
-  border-color: #4caf50;
 }
 </style>
