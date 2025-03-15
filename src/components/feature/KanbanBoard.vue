@@ -68,7 +68,10 @@
       </Container>
     </div>
 
-    <DrawerRoot v-model:open="isTaskDetailsDrawerOpen">
+    <DrawerRoot
+      v-model:open="isTaskDetailsDrawerOpen"
+      :direction="taskDetailsDrawerDirection"
+    >
       <DrawerTrigger as-child>
         <button data-testid="trigger" class="text-2xl">Open Drawer</button>
       </DrawerTrigger>
@@ -112,6 +115,7 @@
 <script setup lang="ts">
 import {
   DrawerContent,
+  DrawerDirection,
   DrawerOverlay,
   DrawerPortal,
   DrawerRoot,
@@ -121,8 +125,10 @@ import { applyDrag, generateItems } from "../../shared/utils/array";
 import { v4 as uuidv4 } from "uuid";
 import { ref, reactive } from "vue";
 
-const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+const taskDetailsDrawerDirection = ref<DrawerDirection>("right");
+
+const lorem = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`;
 
 const columnNames = ["To do", "In progress", "Complete", "Backlog", "Blocked"];
