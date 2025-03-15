@@ -11,7 +11,7 @@
       <Draggable
         v-for="column in scene.children"
         :key="column.id"
-        class="column"
+        class="column custom-scrollbar-container"
       >
         <div class="header">
           <span class="title">
@@ -32,7 +32,7 @@
           drag-class="task-ghost"
           drop-class="card-ghost-drop"
           :drop-placeholder="dropPlaceholderOptions"
-          class="task-list"
+          class="task-list custom-scrollbar"
         >
           <Draggable v-for="card in column.children" :key="card.id">
             <div class="task">
@@ -137,7 +137,7 @@ export default {
 
 <style scoped lang="scss">
 .kanban-container {
-  @apply flex flex-col p-5;
+  @apply flex flex-col p-5 h-full;
 
   .kanban {
     @apply flex flex-row gap-5;
@@ -159,7 +159,7 @@ export default {
       }
 
       .task-list {
-        @apply flex flex-col gap-2 h-full overflow-y-auto;
+        @apply flex flex-col gap-2 pr-3 h-[calc(100vh-50px)] overflow-y-auto;
 
         &.task-ghost {
           @apply bg-zinc-400 border-zinc-700;
@@ -173,5 +173,9 @@ export default {
       }
     }
   }
+}
+
+.task-list .smooth-dnd-draggable-wrapper {
+  @apply overflow-visible #{!important};
 }
 </style>
